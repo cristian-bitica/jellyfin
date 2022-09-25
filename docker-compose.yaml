@@ -1,11 +1,8 @@
 version: "3.5"
 
 networks:
-  private_network:
-    ipam:
-      driver: default
-      config:
-        - subnet: 10.7.0.0/24
+  starlink:
+    external: true
 
 services:
   jellyfin:
@@ -20,8 +17,8 @@ services:
     restart: unless-stopped
     hostname: jellyfin
     networks:
-      private_network:
-        ipv4_address: 10.7.0.100
+      starlink:
+        ipv4_address: 192.168.0.30
     # Optional - alternative address used for autodiscovery
-    environment:
-      - JELLYFIN_PublishedServerUrl=http://cristian-mihai.go.ro
+    # environment:
+    #   - JELLYFIN_PublishedServerUrl=http://cristian-mihai.go.ro
