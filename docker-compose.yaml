@@ -13,7 +13,8 @@ services:
     volumes:
       - ./config:/config
       - ./cache:/cache
-      - /media/InternalMedia:/media
+      - /media/Media:/media
+      - /media/ExternalMedia:/external_media
     restart: unless-stopped
     hostname: jellyfin
     networks:
