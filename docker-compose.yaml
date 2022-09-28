@@ -4,6 +4,12 @@ networks:
   starlink:
     external: true
 
+volumes:
+  jellyfin-cache:
+    external: true
+  jellyfin-config:
+    external: true
+
 services:
   jellyfin:
     container_name: jellyfin
@@ -11,8 +17,8 @@ services:
     ports:
       - 8096:8096
     volumes:
-      - ./config:/config
-      - ./cache:/cache
+      - jellyfin-cache:/config
+      - jellyfin-config:/cache
       - /media/Media:/media
       - /media/ExternalMedia:/external_media
     restart: unless-stopped
