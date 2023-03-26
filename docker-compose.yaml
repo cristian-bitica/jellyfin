@@ -4,28 +4,26 @@ networks:
   starlink:
     external: true
 
-volumes:
-  jellyfin-cache:
-    external: true
-  jellyfin-config:
-    external: true
-
 services:
   jellyfin:
     container_name: jellyfin
-    image: jellyfin/jellyfin
+    image: licebear/jellyfin-ffmpeg-qsv
     ports:
       - 8096:8096
     volumes:
-      - jellyfin-cache:/config
-      - jellyfin-config:/cache
-      - /media/Media:/media
+      - /media/Media/Jellyfin/config:/config
+      - /media/Media/Jellyfin/cache:/cache
+      - /media/Media/Jellyfin/transcode:/transcode
+      - /media/Media/Jellyfin/media:/media
       - /media/ExternalMedia:/external_media
+    devices:
+      - /dev/dri:/dev/dri
     restart: unless-stopped
     hostname: jellyfin
     networks:
       starlink:
         ipv4_address: 192.168.0.30
     # Optional - alternative address used for autodiscovery
-    # environment:
-    #   - JELLYFIN_PublishedServerUrl=http://cristian-mihai.go.ro
+    environment:
+      - JELLYFIN_PublishedServerUrl=https://jellyfin.bitica.xyz
+      - TZ=Europe/Athens
