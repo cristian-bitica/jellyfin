@@ -1,29 +1,34 @@
-version: "3.5"
-
 networks:
-  starlink:
-    external: true
+  jellyfin-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/16
 
 services:
   jellyfin:
+    image: jellyfin/jellyfin@sha256:89d020f73334642943eca3269d2a652ad897481bdf0bd9827e108c939af49f24
     container_name: jellyfin
-    image: licebear/jellyfin-ffmpeg-qsv
-    ports:
-      - 8096:8096
+    user: $UID:$GID
+    networks:
+      jellyfin-net:
+        ipv4_address: 172.19.0.2
     volumes:
-      - /media/Media/Jellyfin/config:/config
-      - /media/Media/Jellyfin/cache:/cache
-      - /media/Media/Jellyfin/transcode:/transcode
-      - /media/Media/Jellyfin/media:/media
-      - /media/ExternalMedia:/external_media
+      - /mnt/5dd038e4-e1e4-46fb-8c77-cd3dfc661647/jellyfin/config:/config
+      - /mnt/5dd038e4-e1e4-46fb-8c77-cd3dfc661647/jellyfin/cache:/cache
+      - type: bind
+        source: /mnt/5dd038e4-e1e4-46fb-8c77-cd3dfc661647/media
+        target: /media
+      # Optional - extra fonts to be used during transcoding with subtitle burn-in
+      - type: bind
+        source: /usr/share/fonts
+        target: /usr/local/share/fonts/custom
+        read_only: true
+    restart: 'unless-stopped'
+    ports:
+      - 8086:8096
     devices:
       - /dev/dri:/dev/dri
-    restart: unless-stopped
-    hostname: jellyfin
-    networks:
-      starlink:
-        ipv4_address: 192.168.0.30
     # Optional - alternative address used for autodiscovery
-    environment:
-      - JELLYFIN_PublishedServerUrl=https://jellyfin.bitica.xyz
-      - TZ=Europe/Athens
+    # environment:
+    #   - JELLYFIN_PublishedServerUrl=http://example.com
