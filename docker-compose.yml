@@ -9,6 +9,7 @@ services:
   jellyfin:
     image: jellyfin/jellyfin@sha256:89d020f73334642943eca3269d2a652ad897481bdf0bd9827e108c939af49f24
     container_name: jellyfin
+    hostname: jellyfin
     user: $UID:$GID
     networks:
       jellyfin-net:
