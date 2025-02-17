@@ -27,7 +27,7 @@ services:
         read_only: true
     restart: 'unless-stopped'
     ports:
-      - 8086:8096
+      - 8096:8096
     devices:
       - /dev/dri:/dev/dri
     # Optional - alternative address used for autodiscovery
